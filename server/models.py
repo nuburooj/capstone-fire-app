@@ -13,6 +13,8 @@ class User(db.Model, SerializerMixin):
     user_name = db.Column(db.String, unique = True, nullable = False)
     email = db.Column(db.String, unique = True, nullable = False)
     _password_hash = db.Column(db.String)
+    user_picture = db.Column(db.String)
+    Socials = db.Column(db.String)
 
     @hybrid_property
     def password_hash(self):
