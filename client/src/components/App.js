@@ -4,18 +4,20 @@ import { Route, BrowserRouter, Routes } from "react-router-dom";
 import UserSignup from "./user_components/UserSignup";
 import UserLogin from "./user_components/UserLogin";
 import UserContext from "./user_components/UserContext";
+import Home from "./Home";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
-
+  console.log(currentUser)
   return (
     <div>
       <UserContext.Provider value={{currentUser, setCurrentUser}}>
-        <div classname="App">
+        <div className="App">
           <BrowserRouter>
             <Routes>
               <Route path='/signup' element={<UserSignup />} />
               <Route path='/login' element={<UserLogin />} />
+              <Route path='/' element={<Home />} />
             </Routes>
           </BrowserRouter>
         </div>

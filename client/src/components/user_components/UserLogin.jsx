@@ -36,7 +36,7 @@ function UserLogin() {
                         password: Yup.string()
                         .required('Password is required')
                     })}
-                    onSubmit={(values, { setSubitting, resetForm }) => {
+                    onSubmit={(values, { setSubmitting, resetForm }) => {
                         
                         fetch(`http://localhost:5555/login`, {
                             method: 'POST',
@@ -50,7 +50,7 @@ function UserLogin() {
                             console.log(values)
                             navigate('/')
                         })
-                        .then( setSubitting(false), resetForm() );
+                        .then( setSubmitting(false), resetForm() );
                     }}
 
                     >
