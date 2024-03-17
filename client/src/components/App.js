@@ -8,7 +8,6 @@ import Home from "./Home";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
-  console.log(currentUser)
   return (
     <div>
       <UserContext.Provider value={{currentUser, setCurrentUser}}>
