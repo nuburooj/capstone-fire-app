@@ -12,7 +12,6 @@ function Home() {
     return(
         <div>
             <NavBar />
-            <AccountOptions />
             <h1>Home</h1>
             <p>{user_name} is Fired Up!</p>
         </div>

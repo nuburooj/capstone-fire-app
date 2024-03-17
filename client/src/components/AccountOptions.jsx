@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import { useUser } from "./user_components/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom"
-
+import "./AccountOptionsStyles.css"
 
 function AccountOptions() {
 

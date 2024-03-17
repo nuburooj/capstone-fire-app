@@ -1,5 +1,6 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom"
-
+import AccountOptions from "./AccountOptions"
+import "./NavBarStyles.css"
 function NavBar(){
     return (
     
@@ -11,7 +12,8 @@ function NavBar(){
            <CustomLink to="/">Home</CustomLink>
            <CustomLink to="/genres">Genres</CustomLink>
            <CustomLink to="/post">Post</CustomLink>
-           <CustomLink to="/me">ME</CustomLink>  
+           <CustomLink to="/me">ME</CustomLink> 
+           <AccountOptions /> 
         </ul>
     </nav>
     )
