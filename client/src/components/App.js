@@ -5,6 +5,7 @@ import UserSignup from "./user_components/UserSignup";
 import UserLogin from "./user_components/UserLogin";
 import UserContext from "./user_components/UserContext";
 import Home from "./Home";
+import NavBar from "./NavBar";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})

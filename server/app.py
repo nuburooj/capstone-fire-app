@@ -85,6 +85,13 @@ class Logout(Resource):
 api.add_resource(Logout, '/logout', endpoint='logout')
 
 
+allowed_endpoints = ['signup', 'login', 'check_session']
+@app.before_request
+def check_if_logged_in():
+    if not session.get('user_id') and request.endpoint not in allowed_endpoints:
+        return {'error': 'Unauthorized'}, 401
+
+
 
 # Views go here!
 
