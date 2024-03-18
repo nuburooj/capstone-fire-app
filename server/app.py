@@ -169,6 +169,7 @@ def song_by_id(id):
                     400
                 )
         elif request.method == 'DELETE':
+            #FUTURE COMMENT CASCADE 
             # assoc_comments = Comment.query.filter(Comment.song_id == id).all()
             # for assoc_comment in assoc_comments:
             #     db.session.delete(assoc_comment)
@@ -193,6 +194,100 @@ def song_by_id(id):
             )
 
         return response
+    
+
+    #Get All Genre Routes
+@app.route('/genres', methods=['GET', 'POST'])
+def genres():
+    
+    if request.method == 'GET':
+    
+        genres_list = [genre.to_dict() for genre in Genre.query.all()]
+        response = make_response(genres_list, 200)
+
+    elif request.method == 'POST':
+        new_genre = Genre(
+            genre_name = request.json['genre_name'],
+            genre_description = request.json['genre_description'],
+            
+        )
+        db.session.add(new_genre)
+        db.session.commit()
+        response = make_response(new_genre.to_dict(), 201)
+    else:
+        response = make_response({'message': 'Method not allowed'}, 405)
+    
+    return response
+
+#Get Genre By ID
+@app.route('/genres/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
+def genre_by_id(id):
+    genre = Genre.query.filter(Genre.id == id).first()
+    if genre:
+        if request.method == 'GET':
+            genre_dict = genre.to_dict()
+
+            response = make_response(genre_dict, 200)
+
+        elif request.method == 'PATCH':
+            
+            try:
+                form_data = request.get_json()
+
+                for attr in form_data:
+                    setattr(genre, attr, form_data[attr])
+
+                db.session.commit()
+
+                response = make_response(genre.to_dict(), 202)
+
+            except ValueError:
+                response = make_response({'errors': ['Validation Errors']}, 400)
+
+        elif request.method == 'DELETE':
+
+            assoc_songs = Song.query.filter(Song.genre_id == id).all()
+            for assoc_song in assoc_songs:
+                db.session.delete(assoc_song)
+
+                db.session.delete(genre)
+
+                db.session.commit()
+                response = make_response({}, 204)
+
+            #FUTURE COMMENT CASCADE
+            # assoc_comments = Comment.query.filter(Comment.song_id == id).all()
+            # for assoc_comment in assoc_comments:
+            #     db.session.delete(assoc_comment)
+
+            #     db.session.delete(genre)
+
+            #     db.session.commit()
+            #     response = make_response({}, 204)
+                
+            db.session.delete(genre)
+            db.session.commit()
+            response = make_response('', 204)
+    else:
+        response = make_response(
+            {'message': 'Method not allowed'}, 405
+        )
+    return response
+
+
+# Get All Songs By Genre
+
+@app.route('/genres/<int:id>/songs', methods=['GET'])
+def songs_by_genre(id):
+    genre = Genre.query.filter(Genre.id == id).first()
+    if genre:
+        song_list = [song.to_dict() for song in Song.query.filter(Song.genre_id == id).all()]
+        response = make_response(song_list, 200)
+    else:
+        response = make_response(
+            {'message': 'Method not allowed'}, 405
+        )
+    return response
 
 
 
