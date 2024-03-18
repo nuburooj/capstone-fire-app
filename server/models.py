@@ -17,6 +17,16 @@ class User(db.Model, SerializerMixin):
     user_picture = db.Column(db.String)
     Socials = db.Column(db.String)
 
+    def __repr__(self):
+        return f'User: {self.username}, Email: {self.email}, Picture: {self.user_picture}'
+
+    #SERIALIZE RULES
+    serialize_rules = ('-_password_hash', '-songs.user' )
+
+    #RELATIONSHIPS
+    songs = db.relationship('Song', back_populates = 'user')
+
+    #USER validations
     @hybrid_property
     def password_hash(self):
         raise Exception("Password hashes may not be viewed.")
@@ -29,7 +39,6 @@ class User(db.Model, SerializerMixin):
     def authenticate(self, password):
         return bcrypt.check_password_hash(self._password_hash, password.encode('utf-8'))
     
-    serialize_rules = ('-_password_hash', )
 
     
     @validates('username')
@@ -63,3 +72,78 @@ class User(db.Model, SerializerMixin):
             raise ValueError('Password needs to be a non-empty string')
 
 
+
+class Song(db.Model, SerializerMixin):
+    __tablename__ = 'songs'
+
+    id = db.Column(db.Integer, primary_key = True)
+    song_title = db.Column(db.String)
+    song_description = db.Column(db.String)
+    song_artwork = db.Column(db.String)
+    artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
+    upload_file = db.Column(db.String)
+
+
+    def __repr__(self):
+        return f'Title: {self.song_title}, Description: {self.song_description}, Album Art: {self.song_artwork}'
+    
+    #RELATIONSHIPS
+    user = db.relationship('User', back_populates = 'songs')
+    genres = db.relationship('Genre', back_populates = 'songs')
+
+    #SERIALIZATION RULES
+    serialize_rules = ('-user.songs', '-genres.songs' )
+
+    
+    #VALIDATIONS
+
+    @validates('song_title')
+    def validate_song_title(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('Song_title must be a non-emty string')
+        return value
+    
+    @validates('song_description')
+    def validate_song_description(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('Song_description must be a non-emty string')
+        return value
+    
+    @validates('song_artwork')
+    def validate_song_artwork(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('Song_description must be a non-emty string')
+        return value
+
+
+class Genre(db.Model,SerializerMixin):
+    __tablename__ = 'genres'
+
+    id = db.Column(db.Integer, primary_key = True)
+    genre_name = db.Column(db.String)
+    genre_description = db.Column(db.String)
+    
+
+    def __repr__(self):
+        return f'Title: {self.genre_name}, Description: {self.genre_description}'
+    
+    #RELATIONSHIPS
+    songs = db.relationship('Song', back_populates = 'genres')
+
+    #SERIALIZE RULES
+    serialize_rules = ('-songs.genres', )
+
+    #VALIDATIONS
+
+    @validates('genre_name')
+    def validate_genre_name(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('genre_name must be a non-emty string')
+        return value
+    
+    @validates('genre_description')
+    def validate_genre_description(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('genre_description must be a non-emty string')
+        return value
