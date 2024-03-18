@@ -5,6 +5,7 @@ import UserSignup from "./user_components/UserSignup";
 import UserLogin from "./user_components/UserLogin";
 import UserContext from "./user_components/UserContext";
 import Home from "./Home";
+import PostPage from "./PostPage";
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
               <Route path='/signup' element={<UserSignup />} />
               <Route path='/login' element={<UserLogin />} />
               <Route path='/' element={<Home />} />
+              <Route path='/post' element={<PostPage />} />
             </Routes>
           </BrowserRouter>
         </div>
