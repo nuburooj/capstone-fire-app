@@ -11,7 +11,7 @@ import GenrePage from "./GenresPage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
-  const [genres, setGenres] = useState([]);
+
   
   return (
     <div>
@@ -23,7 +23,7 @@ function App() {
               <Route path='/login' element={<UserLogin />} />
               <Route path='/' element={<Home />} />
               <Route path='/post' element={<PostPage />} />
-              <Route path = "/genres" element = {<GenrePage genres={genres}/>} />
+              <Route path = "/genres" element = {<GenrePage />} />
             </Routes>
           </BrowserRouter>
         </div>
