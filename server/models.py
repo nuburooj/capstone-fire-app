@@ -80,9 +80,9 @@ class Song(db.Model, SerializerMixin):
     song_title = db.Column(db.String)
     song_description = db.Column(db.String)
     song_artwork = db.Column(db.String)
+    upload_file = db.Column(db.String)
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
-    upload_file = db.Column(db.String)
 
 
     def __repr__(self):
@@ -113,7 +113,13 @@ class Song(db.Model, SerializerMixin):
     @validates('song_artwork')
     def validate_song_artwork(self, key, value):
         if not isinstance(value, str) and len(value) == 0:
-            raise ValueError('Song_description must be a non-emty string')
+            raise ValueError('artwork must be a non-emty string')
+        return value
+    
+    @validates('upload_file')
+    def validate_upload_file(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('Song_file must be a non-emty string')
         return value
 
 

@@ -92,12 +92,108 @@ def check_if_logged_in():
         return {'error': 'Unauthorized'}, 401
 
 
-
 # Views go here!
 
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
+
+
+
+#Get All songs
+@app.route('/songs', methods=['GET', 'POST'])
+def threads():
+    if request.method == "GET":
+        songs = Song.query.all()
+        songs_dict =  [song.to_dict() for song in songs]
+
+        response = make_response(
+            songs_dict,
+            200
+        )
+
+    elif request.method == "POST":
+        new_song = Song(
+            song_title = request.json['song_title'],
+            song_description = request.json['song_description'],
+            song_artwork = request.json['song_artwork'],
+            genre_id = request.json['genre_id'],
+            upload_file = request.json['upload_file']
+        )
+
+        db.session.add(new_song)
+        db.session.commit()
+
+        response = make_response(
+            new_song.to_dict(),
+            200
+        )
+    else:
+        response = make_response(
+            {'message': 'Method is not working'},
+            405
+        )
+
+    return response
+
+
+#Get Songs by ID
+@app.route('/songs/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
+def song_by_id(id):
+    song = Song.query.filter(Song.id == id).first()
+    if song:
+        if request.method == 'GET':
+
+            song_dict = song.to_dict()
+
+            response = make_response(
+                song_dict,
+                200
+            )
+        elif request.method == 'PATCH':
+            try:
+                form_data = request.get_json()
+
+                for attr in form_data:
+                    setattr(song, attr, form_data[attr])
+                
+                db.session.commit()
+
+                response = make_response(
+                    song.to_dict(),
+                    202
+                )
+            except ValueError:
+                response = make_response(
+                    {'errors': ['Validation Errors']},
+                    400
+                )
+        elif request.method == 'DELETE':
+            # assoc_comments = Comment.query.filter(Comment.song_id == id).all()
+            # for assoc_comment in assoc_comments:
+            #     db.session.delete(assoc_comment)
+            #     db.session.delete(song)
+
+            #     db.session.commit()
+            #     response = make_response(
+            #         {},
+            #         204
+            #     )
+            db.session.delete(song)
+            db.session.commit()
+            response = make_response(
+                '',
+                204
+            )
+            
+        else:
+            response = make_response(
+                {'message': 'Invalid Method'},
+                405
+            )
+
+        return response
+
 
 
 if __name__ == '__main__':
