@@ -1,6 +1,5 @@
 import React from 'react';
 import { useUser } from './user_components/UserContext';
-import AccountOptions from './AccountOptions';
 import NavBar from './NavBar';
 
 function Home() {
