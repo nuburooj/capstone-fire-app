@@ -1,6 +1,7 @@
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import React, { useState } from 'react';
+import './GenreStyles.css';
 
 function CreateGenre(props){
 

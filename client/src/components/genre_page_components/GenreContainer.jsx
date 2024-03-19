@@ -1,5 +1,6 @@
 import React from 'react';
 import GenreObject from './GenreObject';
+import './GenreStyles.css';
 
 function GenreContainer({renderGenre}){
 
@@ -12,7 +13,7 @@ function GenreContainer({renderGenre}){
     })
 
     return(
-        <div>
+        <div className="genre-header">
             <h1>Genres</h1>
             {genreToRender}
         </div>
