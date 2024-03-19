@@ -1,0 +1,126 @@
+
+/* Styles for genre object located in GenreObject.jsx */
+.genre-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.genre-container h1 {
+    color: #333;
+    font-size: 24px;
+}
+
+.genre-container p {
+    color: #666;
+    line-height: 1.5;
+}
+
+/* Genre heading in GenreContainer.jsx */
+.genre-header {
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+}
+
+
+/* Container for the form and toggle button */
+.create-genre-container {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Styling form groups for label, input, and error message */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.text-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.error {
+    color: #ff0000;
+    font-size: 0.875em;
+    margin-top: 5px;
+}
+
+/* STYLES FOR CREATE GENRE FORM in CreateGenre.jsx */
+
+/* Style for form and toggle buttons */
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+
+/* STYLES FOR EDIT GENRE FORM IN GenreObject.jsx */
+.edit-genre-form {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-field,
+.textarea-field {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.textarea-field {
+    height: 100px;
+}
+
+.save-button {
+    margin-right: 10px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.cancel-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #f44336;
+    color: white;
+}

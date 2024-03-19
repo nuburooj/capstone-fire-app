@@ -85,7 +85,7 @@ class Logout(Resource):
 api.add_resource(Logout, '/logout', endpoint='logout')
 
 
-allowed_endpoints = ['signup', 'login', 'check_session']
+allowed_endpoints = ['signup', 'login', 'check_session', 'genres', 'songs', 'genre_by_id']
 @app.before_request
 def check_if_logged_in():
     if not session.get('user_id') and request.endpoint not in allowed_endpoints:
@@ -102,7 +102,7 @@ def index():
 
 #Get All songs
 @app.route('/songs', methods=['GET', 'POST'])
-def threads():
+def songs():
     if request.method == "GET":
         songs = Song.query.all()
         songs_dict =  [song.to_dict() for song in songs]

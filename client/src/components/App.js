@@ -5,10 +5,14 @@ import UserSignup from "./user_components/UserSignup";
 import UserLogin from "./user_components/UserLogin";
 import UserContext from "./user_components/UserContext";
 import Home from "./Home";
+import PostPage from "./PostPage";
+import GenrePage from "./GenresPage";
 
 
 function App() {
   const [currentUser, setCurrentUser] = useState({})
+
+  
   return (
     <div>
       <UserContext.Provider value={{currentUser, setCurrentUser}}>
@@ -18,6 +22,8 @@ function App() {
               <Route path='/signup' element={<UserSignup />} />
               <Route path='/login' element={<UserLogin />} />
               <Route path='/' element={<Home />} />
+              <Route path='/post' element={<PostPage />} />
+              <Route path = "/genres" element = {<GenrePage />} />
             </Routes>
           </BrowserRouter>
         </div>
