@@ -67,8 +67,8 @@ function PostPage() {
                         <Form className='Song-Form'>
                             <SongPostTextInput type="text" name="song_title" lable="Track Title" />
                             <SongPostTextInput type="text" name="song_description" lable="Description" />
-                            <SongPostTextInput type="text" name="song_artwork" lable="Artwork" />
-                            <SongPostTextInput type="text" name="upload_file" lable="Audio File" />
+                            <SongPostTextInput type="file" name="song_artwork" lable="Artwork" />
+                            <SongPostTextInput type="file" name="upload_file" lable="Audio File" />
                             <button type="submit">Is it Fire?</button>
                         </Form>
                 </Formik>
