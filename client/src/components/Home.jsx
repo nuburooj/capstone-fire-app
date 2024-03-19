@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from './user_components/UserContext';
 import NavBar from './NavBar';
 import SongContainer from './home_components/SongContainer';
+import AudioPlayer from './Player_components/AudioPlayer';
+import AudioFile from '../assets/audio.mp3';
 
 function Home() {
 
@@ -34,6 +36,7 @@ function Home() {
             <h1>Home</h1>
             <p>{user_name} is Fired Up!</p>
             <SongContainer songs={songs}/>
+            <AudioPlayer audioFile={AudioFile}/>
         </div>
     )
 }
