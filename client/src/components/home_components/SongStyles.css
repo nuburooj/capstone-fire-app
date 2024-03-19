@@ -1,0 +1,45 @@
+/* General styling for each song item */
+.song-item {
+    margin: 20px auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    max-width: 600px;
+}
+
+/* Styling for the song title */
+.song-title {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+/* Styling for the song description */
+.song-description {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Styling for the song artwork image */
+.song-artwork {
+    max-width: 100%;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+/* Styling for the download/view file link */
+.song-link a {
+    display: inline-block;
+    background-color: #007bff;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-bottom: 5px;
+}
+
+.song-link a:hover,
+.song-link a:focus {
+    background-color: #0056b3;
+}

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import './GenreStyles.css';
+import { Link } from 'react-router-dom';
 
 function GenreObject({
     id,
     genre_name,
     genre_description,
+    songs,
     onSave,
     onDelete
 }){
@@ -78,7 +80,9 @@ function GenreObject({
 
     return(
         <div className="genre-container">
+            <Link to={`/genres/${id}`}>
             <h1>{genre_name}</h1>
+            </Link>
             <p>{genre_description}</p>
             <p>ID: {id}</p>
             <button onClick = {handleEdit}>Edit</button>

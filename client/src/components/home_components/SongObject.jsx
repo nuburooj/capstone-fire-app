@@ -1,4 +1,5 @@
 import React from 'react';
+import './SongStyles.css';
 
 function SongObject({
     id,
@@ -10,15 +11,14 @@ function SongObject({
     genre_id
 }){
     return(
-       <div>
-        <h1>{song_title}</h1>
-        <p>ID:{id}</p>
-        <p>Artwork: {song_artwork}</p>
-        <p>Description: {song_description}</p>
-        <p>UF: {upload_file}</p>
-        <p>Artist ID:{artist_id}</p>
-        <p>Genre ID:{genre_id}</p>
-       </div>
+      <div>
+            <div className="song-item" >
+                <h3 className="song-title">title: {song_title}</h3>
+                <p className="song-description">description: {song_description}</p>
+                {song_artwork && <img src={song_artwork} alt={song_title} className="song-artwork" />}
+                {upload_file && <p className="song-link"><a href={upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
+            </div>
+        </div>
     )
 }
 

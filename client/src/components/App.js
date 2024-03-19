@@ -7,6 +7,7 @@ import UserContext from "./user_components/UserContext";
 import Home from "./Home";
 import PostPage from "./PostPage";
 import GenrePage from "./GenresPage";
+import CurrentGenre from "./genre_page_components/CurrentGenre";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
               <Route path='/' element={<Home />} />
               <Route path='/post' element={<PostPage />} />
               <Route path = "/genres" element = {<GenrePage />} />
+              <Route path = "/genres/:id" element = {<CurrentGenre />} />
             </Routes>
           </BrowserRouter>
         </div>

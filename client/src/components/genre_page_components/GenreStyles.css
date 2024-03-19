@@ -124,3 +124,63 @@ button:hover {
     background-color: #f44336;
     color: white;
 }
+
+
+/* CURRENT GENRE STYLES in CurrentGenre.jsx */
+
+/* Style for the genre container */
+.current-genre-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.current-genre-heading {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid #e1e1e1;
+    margin-bottom: 20px;
+}
+
+.genre-name {
+    color: #333;
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    /* Adjusted for closer spacing to the description */
+}
+
+.genre-description {
+    color: #666;
+    font-size: 1.2em;
+}
+
+/* Style for song items */
+.song-item {
+    padding: 10px;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.song-item:last-child {
+    border-bottom: none;
+}
+
+.song-title {
+    color: #007bff;
+    font-size: 1.5em;
+}
+
+.song-description,
+.song-link {
+    color: #666;
+    margin: 5px 0;
+}
+
+.song-artwork {
+    max-width: 100%;
+    height: auto;
+    margin: 10px 0;
+}
