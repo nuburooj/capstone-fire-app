@@ -33,6 +33,34 @@ function GenrePage() {
         })
     }, []);
 
+    function handleSaveGenre(id, updatedGenre){
+        fetch(`http://localhost:5555/genres/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedGenre),
+        })
+     .then(res => res.json())
+     .then(data => {
+
+        setRenderGenre(prevGenres => prevGenres.map(genre => 
+            genre.id === data.id ? data : genre
+        ));
+    })
+    }
+
+    function handleDeleteGenre(id) {
+        fetch(`http://localhost:5555/genres/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+                setRenderGenre(prevGenres => 
+                    prevGenres.filter(genre => genre.id !== id)
+                );
+        })
+    }
+
     return (
         <div>
             <div>
@@ -41,7 +69,7 @@ function GenrePage() {
             <h1>Genres Page</h1>
             <div>
                 <CreateGenre onAddGenre={addGenre} />
-                <GenreContainer renderGenre={renderGenre} />
+                <GenreContainer renderGenre={renderGenre} onSave={handleSaveGenre} onDelete={handleDeleteGenre}/>
             </div>
         </div>
     )
