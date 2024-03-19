@@ -48,22 +48,32 @@ function GenreObject({
 
     if (editMode) {
         return (
-            <div>
-                <input
-                name = "genre_name"
-                value = {editData.genre_name}
-                onChange = {handleChange}
-                />
-                <textarea
-                name = "genre_description"
-                value = {editData.genre_description}
-                onChange = {handleChange}
-                />
-                <button onClick = {handleSave}>Save</button>
-                <button onClick = {handleCancel}>Cancel</button>
-            </div>
-        )
-    }
+            <div className="edit-genre-form">
+      <div className="form-group">
+        <label htmlFor="genre_name">Genre Name</label>
+        <input
+          id="genre_name"
+          name="genre_name"
+          className="input-field"
+          value={editData.genre_name}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="genre_description">Genre Description</label>
+        <textarea
+          id="genre_description"
+          name="genre_description"
+          className="textarea-field"
+          value={editData.genre_description}
+          onChange={handleChange}
+        />
+      </div>
+      <button className="save-button" onClick={handleSave}>Save</button>
+      <button className="cancel-button" onClick={handleCancel}>Cancel</button>
+    </div>
+  );
+}
 
 
     return(

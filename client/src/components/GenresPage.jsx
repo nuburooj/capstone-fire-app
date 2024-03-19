@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import NavBar from "./NavBar";
 import CreateGenre from "./genre_page_components/CreateGenre";
 import GenreContainer from "./genre_page_components/GenreContainer";
-import GenreObject from "./genre_page_components/GenreObject";
+
 
 function GenrePage() {
 
