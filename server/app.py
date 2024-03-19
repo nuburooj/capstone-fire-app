@@ -85,7 +85,7 @@ class Logout(Resource):
 api.add_resource(Logout, '/logout', endpoint='logout')
 
 
-allowed_endpoints = ['signup', 'login', 'check_session', 'genres']
+allowed_endpoints = ['signup', 'login', 'check_session', 'genres', 'songs']
 @app.before_request
 def check_if_logged_in():
     if not session.get('user_id') and request.endpoint not in allowed_endpoints:
