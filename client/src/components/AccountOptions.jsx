@@ -15,7 +15,7 @@ function AccountOptions() {
     const loggingOut = () => {
 
         fetch(`http://localhost:5555/logout`, {
-            method: 'DELETE',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -23,8 +23,9 @@ function AccountOptions() {
         .then(res => res.json())
         .then(data => {
              console.log(data)
+             sessionStorage.removeItem('currentUser')
              setCurrentUser({})
-             navigate('/signup')
+             navigate('/login')
         })
     }
 

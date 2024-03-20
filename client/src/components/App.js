@@ -13,6 +13,14 @@ import CurrentGenre from "./genre_page_components/CurrentGenre";
 function App() {
   const [currentUser, setCurrentUser] = useState({})
 
+  useEffect(()=> {
+    const userInSession = sessionStorage.getItem('currentUser')
+    if (userInSession){
+      const user = JSON.parse(userInSession)
+      setCurrentUser(user)
+    }
+  }, [])
+
   
   return (
     <div>
