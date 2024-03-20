@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {useState } from 'react';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import './UserSignupStyles.css';
+import ImageUploadWidget from '../upload_widget_components/ImageUploadWidget';
 
 function UserSignup(){
 
     const navigate = useNavigate()
+     const [imageLink, setImageLink] = useState("");
 
-    const SignupTextInput = ({lable, ...props}) => {
+    const SignupTextInput = ({label, ...props}) => {
         
         const [field, meta] = useField(props)
         return(
             <div className='form-group'>
-                <lable htmlFor={props.id || props.name}>{lable}</lable>
+                <label htmlFor={props.id || props.name}>{label}</label>
                 <input className='text-input' {...field} {...props} />
                 {meta.touched && meta.error ? (
                     <div className='error'>{meta.error}</div>
@@ -27,10 +29,12 @@ function UserSignup(){
             <h1>Signup</h1>
             <div> 
                 <Formik
+                    enableReinitialize
                     initialValues={{
                         username: "",
                         email: "",
-                        password: ""
+                        password: "",
+                        user_picture: imageLink
                     }}
                     validationSchema={Yup.object({
                         username: Yup.string()
@@ -38,16 +42,20 @@ function UserSignup(){
                         email: Yup.string()
                         .required('Email is required.'),
                         password: Yup.string()
-                        .required('Password is required')
+                        .required('Password is required'),
+                        user_picture: Yup.string()
+                        .required('Please upload a picture.')
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         
+                        // Ensure the user_picture field is updated with the latest imageLink
+                        const submissionValues = { ...values, user_picture: imageLink };
                         fetch(`http://localhost:5555/signup`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(values)    
+                            body: JSON.stringify(submissionValues)    
                         })
                         .then(res => res.json())
                         .then(values => {
@@ -58,9 +66,11 @@ function UserSignup(){
                     }}
                     >
                         <Form className='SubmitForm'>
-                            <SignupTextInput type="text" name="username" lable="Username" />
-                            <SignupTextInput type="email" name="email" lable="Email" />
-                            <SignupTextInput type="password" name="password" lable="Password" />
+                            <SignupTextInput type="text" name="username" label="Username" />
+                            <SignupTextInput type="email" name="email" label="Email" />
+                            <SignupTextInput type="password" name="password" label="Password" />
+                            <ImageUploadWidget onSetImage={setImageLink}/>
+                            {imageLink && <img src={imageLink} alt="Uploaded picture" />}
                             <button type="submit">Submit</button>
                         </Form>
                 </Formik>
@@ -71,3 +81,4 @@ function UserSignup(){
 }
 
 export default UserSignup;
+

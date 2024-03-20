@@ -59,14 +59,14 @@ function AccountOptions() {
     return (
         <div>
             <button onClick={toggleMenu} className="avatar-button" >
-                <img src={currentUser?.pictureUrl || 'default-picture.png'} alt="User Picture" className="user-Picture" />
+                <img src={currentUser?.user_picture || 'default-picture.png'} alt="User Picture" className="user-Picture" />
             </button>
 
             {isOpen && (
                 <div className="dropdown-menu">
                     <div className="dropdown-menu-header">
                         <div className="dropdown-menu-header-title">
-                            <h3>Account</h3>
+                            <h3>{currentUser.username}</h3>
                         </div>
                         <div className="dropdown-menu-header-close" onClick={toggleMenu}>
                             <i className="fas fa-times"></i>
