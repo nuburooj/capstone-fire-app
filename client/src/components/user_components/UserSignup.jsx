@@ -34,7 +34,8 @@ function UserSignup(){
                         username: "",
                         email: "",
                         password: "",
-                        user_picture: imageLink
+                        user_picture: imageLink,
+                        Socials: ""
                     }}
                     validationSchema={Yup.object({
                         username: Yup.string()
@@ -44,7 +45,9 @@ function UserSignup(){
                         password: Yup.string()
                         .required('Password is required'),
                         user_picture: Yup.string()
-                        .required('Please upload a picture.')
+                        .required('Please upload a picture.'),
+                        Socials: Yup.string()
+                        .required('Please provide a link to your Spotify.')
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
                         
@@ -66,12 +69,14 @@ function UserSignup(){
                     }}
                     >
                         <Form className='SubmitForm'>
+                            <ImageUploadWidget onSetImage={setImageLink}/>
+                            {imageLink && <img src={imageLink} alt="Uploaded picture" />}
                             <SignupTextInput type="text" name="username" label="Username" />
                             <SignupTextInput type="email" name="email" label="Email" />
                             <SignupTextInput type="password" name="password" label="Password" />
-                            <ImageUploadWidget onSetImage={setImageLink}/>
-                            {imageLink && <img src={imageLink} alt="Uploaded picture" />}
+                            <SignupTextInput type="text" name="Socials" label="Spotify" />
                             <button type="submit">Submit</button>
+                            
                         </Form>
                 </Formik>
             </div>

@@ -71,7 +71,17 @@ class User(db.Model, SerializerMixin):
         if not isinstance(value, str) and len(value) == 0:
             raise ValueError('Password needs to be a non-empty string')
 
-
+    @validates('user_picture')
+    def validate_user_picture(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('User_picture must be a non-emty string')
+        return value
+    
+    @validates('Socials')
+    def validate_Socials(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('Spotify link must be a non-emty string')
+        return value
 
 class Song(db.Model, SerializerMixin):
     __tablename__ = 'songs'

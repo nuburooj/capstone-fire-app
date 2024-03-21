@@ -33,7 +33,9 @@ class Signup(Resource):
         try:
             user = User(
                 username=json['username'],
-                email=json['email']
+                email=json['email'],
+                user_picture=json['user_picture'],
+                Socials=json['Socials']
             )
             user.password_hash = json['password']
             db.session.add(user)
@@ -85,7 +87,7 @@ class Logout(Resource):
 api.add_resource(Logout, '/logout', endpoint='logout')
 
 
-allowed_endpoints = ['signup', 'login', 'check_session', 'genres', 'songs', 'genre_by_id']
+allowed_endpoints = ['signup', 'login', 'check_session', 'genres', 'songs', 'genre_by_id', 'logout', 'users', 'user_by_id']
 @app.before_request
 def check_if_logged_in():
     if not session.get('user_id') and request.endpoint not in allowed_endpoints:
@@ -97,6 +99,57 @@ def check_if_logged_in():
 @app.route('/')
 def index():
     return '<h1>Project Server</h1>'
+
+
+#Get All Users
+@app.route('/users', methods=['GET',])
+def users():
+
+        users = User.query.all()
+        users_dict = [user.to_dict() for user in users]
+
+        response = make_response(
+            users_dict,
+            200
+        )
+        return response
+
+
+#Get Users by ID
+@app.route('/users/<int:id>', methods=['GET', 'PATCH'])
+def user_by_id(id):
+    user = User.query.filter(User.id == id).first()
+    if user:
+        if request.method == 'GET':
+
+            user_dict = user.to_dict()
+
+            response = make_response(
+                user_dict,
+                200
+            )
+
+        elif request.method == 'PATCH':
+            try:
+                form_data = request.get_json()
+
+
+                for attr in form_data:
+                    setattr(user, attr, form_data[attr])
+
+                db.session.commit()
+
+                response = make_response(
+                    user.to_dict(),
+                    202
+                )
+            except ValueError:
+                response = make_response(
+                    {'errors': ['Validation Errors']},
+                    400
+                )
+
+        return response
 
 
 
