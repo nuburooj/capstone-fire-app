@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './GenreStyles.css';
 import NavBar from '../NavBar';
+import AudioPlayerGenre from '../Player_components/AudioPlayerGenre';
 
 function CurrentGenre({
     genre_name,
@@ -46,6 +47,7 @@ function CurrentGenre({
                                 </Link>
                                     <p className="song-description">{song.song_description}</p>
                                     {song.song_artwork && <img src={song.song_artwork} alt={song.song_title} className="song-artwork" />}
+                                    <AudioPlayerGenre genreSong={song.upload_file} />
                                     {song.upload_file && <p className="song-link"><a href={song.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                             </div>
                         ))}

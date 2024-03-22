@@ -32,7 +32,7 @@ function formatTime(seconds) {
 
 
 
-function AudioPlayer({currentSong}){
+function AudioPlayerGenre({genreSong}){
 
     const waveformRef = useRef(null);
 	const wavesurfer = useRef(null);
@@ -50,14 +50,14 @@ function AudioPlayer({currentSong}){
 		wavesurfer.current = WaveSurfer.create(options);
 
 		// Load the audio file
-		wavesurfer.current.load(currentSong);
+		wavesurfer.current.load(genreSong);
 		
 
 		// When WaveSurfer is ready
 		wavesurfer.current.on('ready', () => {
 			setVolume(wavesurfer.current.getVolume());
 			setDuration(wavesurfer.current.getDuration());
-			setAudioFileName(currentSong.split('/').pop());
+			setAudioFileName(genreSong.split('/').pop());
 		});
 
 		// Update current time in state as audio plays
@@ -71,7 +71,7 @@ function AudioPlayer({currentSong}){
 			wavesurfer.current.un('ready');
 			wavesurfer.current.destroy();
 		};
-	}, [currentSong]);
+	}, [genreSong]);
 
 	// Toggle playback of audio
 	const handlePlayPause = () => {
@@ -151,4 +151,4 @@ function AudioPlayer({currentSong}){
    
 }
 
-export default AudioPlayer;
+export default AudioPlayerGenre;
