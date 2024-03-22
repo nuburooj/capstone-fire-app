@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import './GenreStyles.css';
 import NavBar from '../NavBar';
 
@@ -41,10 +41,12 @@ function CurrentGenre({
                     <div>
                         {genreSong.songs.map(song => (
                             <div className="song-item" key={song.id}>
-                                <h3 className="song-title">{song.song_title}</h3>
-                                <p className="song-description">{song.song_description}</p>
-                                {song.song_artwork && <img src={song.song_artwork} alt={song.song_title} className="song-artwork" />}
-                                {song.upload_file && <p className="song-link"><a href={song.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
+                                <Link to={`/songs/${song.id}`}>
+                                    <h3 className="song-title">{song.song_title}</h3>
+                                </Link>
+                                    <p className="song-description">{song.song_description}</p>
+                                    {song.song_artwork && <img src={song.song_artwork} alt={song.song_title} className="song-artwork" />}
+                                    {song.upload_file && <p className="song-link"><a href={song.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                             </div>
                         ))}
                     </div>

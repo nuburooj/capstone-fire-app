@@ -8,6 +8,7 @@ import Home from "./Home";
 import PostPage from "./PostPage";
 import GenrePage from "./GenresPage";
 import CurrentGenre from "./genre_page_components/CurrentGenre";
+import CurrentSong from "./home_components/CurrentSong";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <Route path='/post' element={<PostPage />} />
               <Route path = "/genres" element = {<GenrePage />} />
               <Route path = "/genres/:id" element = {<CurrentGenre />} />
+              <Route path = "/songs/:id" element={<CurrentSong />} />
             </Routes>
           </BrowserRouter>
         </div>
