@@ -102,16 +102,41 @@ def index():
 
 
 #Get All Users
-@app.route('/users', methods=['GET',])
+@app.route('/users', methods=['GET', 'POST'])
 def users():
+        if request.method == 'GET':
 
-        users = User.query.all()
-        users_dict = [user.to_dict() for user in users]
+            users = User.query.all()
+            users_dict = [user.to_dict() for user in users]
 
-        response = make_response(
-            users_dict,
-            200
-        )
+            response = make_response(
+                users_dict,
+                200
+            )
+        
+        elif request.method == "POST":
+            new_user = User(
+                username=request.json['username'],
+                email=request.json['email'],
+                user_picture=request.json['user_picture'],
+                Socials=request.json['Socials']
+            )
+            new_user.password_hash = request.json['password']
+            db.session.add(new_user)
+            db.session.commit()
+            session['user_id'] = new_user.id
+
+            response = make_response(
+                new_user.to_dict(),
+                200
+            )
+            
+        else:
+            response = make_response(
+                {'message': 'Method is not working'},
+                405
+            )
+
         return response
 
 
