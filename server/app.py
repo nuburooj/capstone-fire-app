@@ -368,6 +368,62 @@ def songs_by_genre(id):
     return response
 
 
+#Get All Comments
+@app.route('/comments', methods=['GET', 'POST'])
+def comments():
+    if request.method == 'GET':
+    
+        comment_list = [comment.to_dict() for comment in Comment.query.all()]
+        response = make_response(comment_list, 200)
+
+    elif request.method == 'POST':
+        new_comment = Comment(
+            comment_description = request.json['comment_description'],
+            user_id = request.json['user_id'],
+            song_id = request.json['song_id']
+        )
+        db.session.add(new_comment)
+        db.session.commit()
+        response = make_response(new_comment.to_dict(), 201)
+    else:
+        response = make_response({'message': 'Method not allowed'}, 405)
+    
+    return response
+
+#Get Comments By ID
+@app.route('/comments/<int:id>', methods=['GET', 'PATCH', 'DELETE'])
+def comment_by_id(id):
+    comment = Comment.query.filter(Comment.id == id).first()
+    if comment:
+        if request.method == 'GET':
+            comment_dict = comment.to_dict()
+
+            response = make_response(comment_dict, 200)
+        elif request.method == 'PATCH':
+            
+            try:
+                form_data = request.get_json()
+
+                for attr in form_data:
+                    setattr(comment, attr, form_data[attr])
+
+                db.session.commit()
+
+                response = make_response(comment.to_dict(), 202)
+            except ValueError:
+                response = make_response({'errors': ['Validation Errors']}, 400)
+        elif request.method == 'DELETE':
+            
+            db.session.delete(comment)
+            db.session.commit()
+            response = make_response('', 204)
+    else:
+        response = make_response(
+            {'message': 'Method not allowed'}, 405
+        )
+    return response
+
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)

@@ -21,10 +21,11 @@ class User(db.Model, SerializerMixin):
         return f'User: {self.username}, Email: {self.email}, Picture: {self.user_picture}'
 
     #SERIALIZE RULES
-    serialize_rules = ('-_password_hash', '-songs.user' )
+    serialize_rules = ('-_password_hash', '-songs.user', '-comments.user' )
 
     #RELATIONSHIPS
     songs = db.relationship('Song', back_populates = 'user')
+    comments = db.relationship('Comment', back_populates = 'user')
 
     #USER validations
     @hybrid_property
@@ -101,9 +102,10 @@ class Song(db.Model, SerializerMixin):
     #RELATIONSHIPS
     user = db.relationship('User', back_populates = 'songs')
     genres = db.relationship('Genre', back_populates = 'songs')
+    comments = db.relationship('Comment', back_populates = 'song')
 
     #SERIALIZATION RULES
-    serialize_rules = ('-user.songs', '-genres.songs' )
+    serialize_rules = ('-user.songs', '-genres.songs', '-comments.song' )
 
     
     #VALIDATIONS
@@ -162,4 +164,29 @@ class Genre(db.Model,SerializerMixin):
     def validate_genre_description(self, key, value):
         if not isinstance(value, str) and len(value) == 0:
             raise ValueError('genre_description must be a non-emty string')
+        return value
+    
+
+class Comment(db.Model, SerializerMixin):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key = True)
+    comment_description = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    edited_at = db.Column(db.DateTime, onupdate = db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    song_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+
+    #RELATIONSHIPS
+    user = db.relationship('User', back_populates = 'comments')
+    song = db.relationship('Song', back_populates = 'comments')
+
+    #SERIALIZE RULES
+    serialize_rules = ('-user.comments', '-song.comments')
+
+    #COMMENTS VALIDATIONS
+    @validates('comment_description')
+    def validate_comment_description(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('comment_description must be a non-emty string')
         return value
