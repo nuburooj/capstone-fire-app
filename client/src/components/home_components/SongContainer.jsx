@@ -1,12 +1,12 @@
 import React from 'react';
 import SongObject from './SongObject';
 
-function SongContainer({songs}){
+function SongContainer({songs, onSave, onDelete}){
 
     const songToRender = songs.map((songObj) => {
         return(
             <div key={songObj.id}>
-                <SongObject {...songObj}/>
+                <SongObject {...songObj} onSave={onSave} onDelete={onDelete}/>
             </div>
         )
     })

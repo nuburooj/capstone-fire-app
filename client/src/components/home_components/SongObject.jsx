@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom'
 import './SongStyles.css';
-import AudioFile from '../home_components/audio.mp3';
 import AudioPlayerHome from '../Player_components/AudioPlayerHome';
 import CreateComment from '../comment_components/CreateComment';
 
@@ -12,7 +11,9 @@ function SongObject({
     song_artwork,
     upload_file,
     artist_id,
-    genre_id
+    genre_id,
+    onSave,
+    onDelete
 }){
 
     const [currentSong, setCurrentSong] = useState({
@@ -50,6 +51,64 @@ function SongObject({
             });
     }, [id]);
 
+
+    const [editMode, setEditMode] = useState(false);
+    const [editData, setEditData] = useState({
+        id: id,
+        song_title: song_title,
+        song_description: song_description,
+    })
+
+    function handleEdit(){
+        setEditMode(true);
+    }
+
+    function handleChange(e){
+        const {name, value} = e.target
+        setEditData(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    function handleSave(){
+        onSave(id, editData);
+        setEditMode(false);
+    }
+
+    function handleCancel(){
+        setEditMode(false);
+    }
+
+    function handleDelete(){
+        //set option for confirm deletion 
+        const confirmDelete = window.confirm('Are you sure you want to delete?')
+
+        if (confirmDelete){
+            onDelete(id);
+        }
+    }
+
+    if (editMode) {
+        return (
+            <div>
+                <input
+                name = "song_title"
+                value = {editData.song_title}
+                onChange = {handleChange}
+                />
+                <textarea
+                name = "song_description"
+                value = {editData.song_description}
+                onChange = {handleChange}
+                />
+                <button onClick = {handleSave}>Save</button>
+                <button onClick = {handleCancel}>Cancel</button>
+            </div>
+        )
+    }
+    
+
     return(
       <div>
             <div className="song-item" >
@@ -60,6 +119,8 @@ function SongObject({
                 {upload_file ? <AudioPlayerHome audioFile={upload_file} /> : "Loading..."}
                 {upload_file && <p className="song-link"><a href={upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                 <p className="song-description">description: {song_description}</p>
+                <button onClick = {handleEdit}>Edit</button>
+                <button onClick = {handleDelete}>Delete</button>
                 <div>
                     <div>
                         {currentSong.comments && currentSong.comments.map(comment => (

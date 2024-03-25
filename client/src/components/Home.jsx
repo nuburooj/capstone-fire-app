@@ -30,12 +30,40 @@ function Home() {
         })
     }, [setSongs]);
 
+    function handleSaveSong(id, updatedSong){
+        fetch(`http://localhost:5555/songs/${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedSong),
+        })
+     .then(res => res.json())
+     .then(data => {
+
+        setSongs(prevSongs => prevSongs.map(song => 
+            song.id === data.id ? data : song
+        ));
+    })
+    }
+
+    function handleDeleteSong(id) {
+        fetch(`http://localhost:5555/songs/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+                setSongs(prevSongs => 
+                    prevSongs.filter(song => song.id !== id)
+                );
+        })
+    }
+
     return(
         <div>
             <NavBar />
             <h1>Home</h1>
             <p>{user_name} is Fired Up!</p>
-            <SongContainer songs={songs}/>
+            <SongContainer songs={songs} onSave={handleSaveSong} onDelete={handleDeleteSong}/>
         </div>
     )
 }
