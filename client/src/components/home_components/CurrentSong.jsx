@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import AudioPlayer from '../Player_components/AudioPlayer';
 import NavBar from '../NavBar';
 import CreateComment from '../comment_components/CreateComment';
@@ -12,7 +12,8 @@ function CurrentSong({
     upload_file,
     genre_id,
 }) {
-    const[addComment, setAddComment] = useState([])
+    const navigate = useNavigate()
+
     const [currentSong, setCurrentSong] = useState({
         song_title: '',
         song_description: '',
@@ -48,6 +49,89 @@ function CurrentSong({
             });
     }, [id]);
 
+
+
+
+    const [editMode, setEditMode] = useState(false);
+    const [editData, setEditData] = useState({
+        id: id,
+        song_title: song_title,
+        song_description: song_description,
+    })
+
+    function handleEditSong(){
+        setEditMode(true);
+    }
+
+    function handleChange(e){
+        const {name, value} = e.target
+        setEditData(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    function handleSave() {
+    const updatedSong = {
+        ...editData,
+
+    };
+
+    fetch(`http://localhost:5555/songs/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedSong),
+    })
+    .then(response => response.json())
+    .then(data => {
+        setCurrentSong(data); 
+        setEditMode(false);
+    })
+    .catch(error => console.error('Error updating song:', error));
+}
+
+    function handleCancel(){
+        setEditMode(false);
+    }
+
+    function handleDeleteSong() {
+    const confirmDelete = window.confirm('Are you sure you want to delete?');
+    if (confirmDelete) {
+        fetch(`http://localhost:5555/songs/${id}`, {
+            method: 'DELETE',
+        })
+        .then(() => {
+            
+            console.log('Song deleted successfully');
+            navigate('/')
+          
+        })
+        .catch(error => console.error('Error deleting song:', error));
+    }
+}
+
+    if (editMode) {
+        return (
+            <div>
+                <input
+                name = "song_title"
+                value = {editData.song_title}
+                onChange = {handleChange}
+                />
+                <textarea
+                name = "song_description"
+                value = {editData.song_description}
+                onChange = {handleChange}
+                />
+                <button onClick = {handleSave}>Save</button>
+                <button onClick = {handleCancel}>Cancel</button>
+            </div>
+        )
+    }
+
+
     return (
          <div>
             <div>
@@ -58,6 +142,8 @@ function CurrentSong({
                     <AudioPlayer currentSong={currentSong.upload_file} />
                     {currentSong.upload_file && <p className="song-link"><a href={currentSong.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                     <p className="song-description">description: {currentSong.song_description}</p>
+                    {!editMode && <button onClick={handleEditSong}>Edit</button>}
+                    <button onClick = {handleDeleteSong}>Delete</button>
                     <div>
                         {currentSong.comments && currentSong.comments.map(comment => (
                             <div key={comment.id}>
