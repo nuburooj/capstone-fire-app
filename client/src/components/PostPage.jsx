@@ -5,9 +5,12 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import ImageUploadWidget from "./upload_widget_components/ImageUploadWidget";
 import TrackUploadWidget from "./upload_widget_components/TrackUploadWidget";
+import { useUser } from "./user_components/UserContext";
+
 function PostPage() {
 
  const navigate = useNavigate()
+ const {currentUser, setCurrentUser} = useUser()
  const [imageLink, setImageLink] = useState("")
  const [trackLink, setTrackLink] = useState("")
 
@@ -34,6 +37,7 @@ function PostPage() {
                 <Formik
                 enableReinitialize
                     initialValues={{
+                        artist_id: currentUser.id,
                         song_title: "",
                         song_description: "",
                         song_artwork: imageLink,
@@ -55,7 +59,7 @@ function PostPage() {
                         
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
-                        const submmissionValues = {...values, user_picture: imageLink, upload_file: trackLink};
+                        const submmissionValues = {...values, user_picture: imageLink, upload_file: trackLink, artist_id: currentUser.id};
                         
                         fetch(`http://localhost:5555/songs`, {
                             method: 'POST',

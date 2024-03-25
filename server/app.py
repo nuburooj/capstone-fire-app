@@ -87,7 +87,7 @@ class Logout(Resource):
 api.add_resource(Logout, '/logout', endpoint='logout')
 
 
-allowed_endpoints = ['signup', 'login', 'check_session', 'genres', 'songs', 'song_by_id', 'genre_by_id', 'logout', 'users', 'user_by_id', 'comments', 'comment_by_id']
+allowed_endpoints = ['signup', 'login', 'check_session', 'genres', 'songs', 'song_by_id', 'genre_by_id', 'logout', 'users', 'user_by_id', 'comments', 'comment_by_id', 'comments_by_songs']
 @app.before_request
 def check_if_logged_in():
     if not session.get('user_id') and request.endpoint not in allowed_endpoints:
@@ -196,7 +196,8 @@ def songs():
             song_description = request.json['song_description'],
             song_artwork = request.json['song_artwork'],
             genre_id = request.json['genre_id'],
-            upload_file = request.json['upload_file']
+            upload_file = request.json['upload_file'],
+            artist_id = request.json['artist_id']
         )
 
         db.session.add(new_song)
@@ -423,6 +424,19 @@ def comment_by_id(id):
         )
     return response
 
+#GET ALL COMMENTS BY SONG
+
+@app.route('/songs/<int:id>/comments', methods=['GET'])
+def comments_by_songs(id):
+    song = Song.query.filter(Song.id == id).first()
+    if song:
+        comment_list = [comment.to_dict() for comment in Comment.query.filter(Comment.song_id == id).all()]
+        response = make_response(comment_list, 200)
+    else:
+        response = make_response(
+            {'message': 'Method not allowed'}, 405
+        )
+    return response
 
 
 if __name__ == '__main__':

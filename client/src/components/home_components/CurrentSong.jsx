@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AudioPlayer from '../Player_components/AudioPlayer';
 import NavBar from '../NavBar';
-import CreateComment from '../comment_components/CreateComment';
+import CommentList from '../comment_components/CommentList';
 
 
 function CurrentSong({
@@ -145,13 +145,8 @@ function CurrentSong({
                     {!editMode && <button onClick={handleEditSong}>Edit</button>}
                     <button onClick = {handleDeleteSong}>Delete</button>
                     <div>
-                        {currentSong.comments && currentSong.comments.map(comment => (
-                            <div key={comment.id}>
-                                <p>{comment.comment_description}</p>
-                            </div>
-                        ))}
+                    <CommentList  songId={id} onAddComment={handleNewComment} />
                     </div>
-                    <CreateComment onAddComment={handleNewComment} songId={id} />
                 </div>
             </div>
         </div>

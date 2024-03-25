@@ -101,11 +101,11 @@ class Song(db.Model, SerializerMixin):
     
     #RELATIONSHIPS
     user = db.relationship('User', back_populates = 'songs')
-    genres = db.relationship('Genre', back_populates = 'songs')
+    genre = db.relationship('Genre', back_populates = 'songs')
     comments = db.relationship('Comment', back_populates = 'song')
 
     #SERIALIZATION RULES
-    serialize_rules = ('-user.songs', '-genres.songs', '-comments.song' )
+    serialize_rules = ('-user.songs', '-genre.songs', '-comments.song', '-user.comments', '-comments.user' )
 
     
     #VALIDATIONS
@@ -147,10 +147,10 @@ class Genre(db.Model,SerializerMixin):
         return f'Title: {self.genre_name}, Description: {self.genre_description}'
     
     #RELATIONSHIPS
-    songs = db.relationship('Song', back_populates = 'genres')
+    songs = db.relationship('Song', back_populates = 'genre')
 
     #SERIALIZE RULES
-    serialize_rules = ('-songs.genres', )
+    serialize_rules = ('-songs.genre', )
 
     #VALIDATIONS
 

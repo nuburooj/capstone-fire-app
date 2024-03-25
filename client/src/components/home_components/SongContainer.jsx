@@ -2,7 +2,7 @@ import React from 'react';
 import SongObject from './SongObject';
 
 function SongContainer({songs, onSave, onDelete}){
-
+console.log(songs)
     const songToRender = songs.map((songObj) => {
         return(
             <div key={songObj.id}>

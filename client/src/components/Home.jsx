@@ -16,7 +16,7 @@ function Home() {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5555/songs`).then(res => {
+        fetch(`/songs`).then(res => {
             if (res.status != 200){
                 console.log("ERROR FETCHING");
                 return;

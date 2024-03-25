@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
+import { useUser } from '../user_components/UserContext';
 
 function CreateComment({onAddComment, songId}){
-
+    const {currentUser, setCurrentUser} = useUser()
     const [showCreateComment, setShowCreateComment] = useState(false);
 
 
@@ -31,7 +32,7 @@ function CreateComment({onAddComment, songId}){
             <Formik
                 initialValues={{
                     comment_description: '',
-                    user_id: '',
+                    user_id: currentUser.id,
                     song_id: songId
                 }}
                 validationSchema={Yup.object({
@@ -47,7 +48,7 @@ function CreateComment({onAddComment, songId}){
                 },
                 body: JSON.stringify({
                     comment_description: values.comment_description,
-                    user_id: values.user_id,
+                    user_id: currentUser.id,
                     song_id: songId
                 }),
                 })

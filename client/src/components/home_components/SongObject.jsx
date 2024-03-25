@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { Link } from 'react-router-dom'
 import './SongStyles.css';
 import AudioPlayerHome from '../Player_components/AudioPlayerHome';
 import CreateComment from '../comment_components/CreateComment';
+import CommentList from '../comment_components/CommentList';
+import { useUser } from '../user_components/UserContext';
 
 function SongObject({
     id,
@@ -13,9 +15,10 @@ function SongObject({
     artist_id,
     genre_id,
     onSave,
-    onDelete
+    onDelete,
+    user
 }){
-
+    const {currentUser, setCurrentUser} = useUser();
     const [currentSong, setCurrentSong] = useState({
         song_title: '',
         song_description: '',
@@ -112,6 +115,8 @@ function SongObject({
     return(
       <div>
             <div className="song-item" >
+                {user.user_picture && <img src={user.user_picture} alt={user.username} className="user-picture" />}
+                <h2>{user.username}</h2>
                 {song_artwork && <img src={song_artwork} alt={song_title} className="song-artwork" />}
                 <Link to={`/songs/${id}`}>
                 <h3 className="song-title">title: {song_title}</h3>
@@ -119,17 +124,14 @@ function SongObject({
                 {upload_file ? <AudioPlayerHome audioFile={upload_file} /> : "Loading..."}
                 {upload_file && <p className="song-link"><a href={upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                 <p className="song-description">description: {song_description}</p>
+                { currentUser.id == artist_id &&(
+                <div>
                 <button onClick = {handleEdit}>Edit</button>
                 <button onClick = {handleDelete}>Delete</button>
+                </div>
+                )}
                 <div>
-                    <div>
-                        {currentSong.comments && currentSong.comments.map(comment => (
-                            <div key={comment.id}>
-                                <p>{comment.comment_description}</p>
-                            </div>
-                        ))}
-                    </div>
-                    <CreateComment onAddComment={handleNewComment} songId={id} />
+                    <CommentList user={user} songId={id} onAddComment={handleNewComment} />
                 </div>
             </div>
         </div>
