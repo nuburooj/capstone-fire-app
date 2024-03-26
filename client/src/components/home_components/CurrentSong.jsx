@@ -141,6 +141,8 @@ console.log(id)
             <div>
                 <NavBar />
                 <div className="song-item" >
+                    {currentSong.user.user_picture && <img src={currentSong.user.user_picture} alt={currentSong.user.username} className="user-picture" />}
+                    <h2>{currentSong.user.username}</h2>
                     {currentSong.song_artwork && <img src={currentSong.song_artwork} alt={currentSong.song_title} className="song-artwork" />}
                     <h3 className="song-title">title: {currentSong.song_title}</h3>
                     <AudioPlayer currentSong={currentSong.upload_file} />
