@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Comment from './Comment'; // Assume this is the component that allows editing and deleting
 import CreateComment from './CreateComment';
 
-function CommentList({ user, songId, onAddComment }) {
+function CommentList({ songUser, songId, onAddComment }) {
     const [comments, setComments] = useState([]);
-    
+    console.log(comments)
     useEffect(() => {
         
         fetch(`http://localhost:5555/songs/${songId}/comments`)
             .then(response => response.json())
             .then(data => {
                 setComments(data);
+                console.log(data)
             });
     }, [songId]);
 
@@ -32,7 +33,6 @@ function CommentList({ user, songId, onAddComment }) {
 
   
     function handleEditComment(editData){
-        debugger
         fetch(`http://localhost:5555/comments/${editData.id}`, {
             method: 'PATCH',
             headers: {
@@ -70,7 +70,7 @@ function CommentList({ user, songId, onAddComment }) {
                 comment={comment}
                 onDelete={handleDeleteComment}
                 onEdit={handleEditComment}
-                user={user}
+                songUser={songUser}
                 />
                 ))}
             </div>

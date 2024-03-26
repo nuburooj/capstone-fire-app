@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from "react";
 import { useUser } from "../user_components/UserContext";
 
-function Comment({ user, comment, onDelete, onEdit }) {
+function Comment({  songUser, comment, onDelete, onEdit }) {
+    console.log(comment)
     const [isEditing, setIsEditing] = useState(false);
     const {currentUser, setCurrentUser} = useUser()
+    console.log(songUser)
     const [editData, setEditData] = useState({
         id: comment.id,
         comment_description: comment.comment_description
     })
-
     useEffect(() => {
         setEditData({
             id: comment.id,
@@ -51,10 +52,10 @@ function Comment({ user, comment, onDelete, onEdit }) {
             ) : (
                
                 <div>
-                    {user.user_picture && <img src={user.user_picture} alt={user.username} className="user-picture" />}
-                     <h4>{user.username}</h4>
+                    {comment.user.user_picture && <img src={comment.user.user_picture} alt={comment.user.username} className="user-picture" />}
+                     <h4>{comment.user.username}</h4>
                     <p>{comment.comment_description}</p>
-                    { currentUser.id === user.id &&(
+                    { currentUser.id === comment.user?.id &&(
                     <div>
                         <button onClick={() => setIsEditing(true)}>Edit</button>
                         <button onClick={handleDelete}>Delete</button>

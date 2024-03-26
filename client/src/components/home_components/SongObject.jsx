@@ -2,7 +2,6 @@ import React, { useEffect, useState, } from 'react';
 import { Link } from 'react-router-dom'
 import './SongStyles.css';
 import AudioPlayerHome from '../Player_components/AudioPlayerHome';
-import CreateComment from '../comment_components/CreateComment';
 import CommentList from '../comment_components/CommentList';
 import { useUser } from '../user_components/UserContext';
 
@@ -18,6 +17,7 @@ function SongObject({
     onDelete,
     user
 }){
+    console.log(user.id)
     const {currentUser, setCurrentUser} = useUser();
     const [currentSong, setCurrentSong] = useState({
         song_title: '',
@@ -29,17 +29,17 @@ function SongObject({
    
 
 
-    function handleNewComment(newComment) {
-        console.log(newComment); 
-        if (newComment && newComment.id) {
-            setCurrentSong(prevSong => ({
-                ...prevSong,
-                comments: [...prevSong.comments, newComment]
-            }));
-        } else {
-            console.error('Attempted to add an undefined or invalid Comment:', newComment);
-        }
-    };
+    // function handleNewComment(newComment) {
+    //     console.log(newComment); 
+    //     if (newComment && newComment.id) {
+    //         setCurrentSong(prevSong => ({
+    //             ...prevSong,
+    //             comments: [...prevSong.comments, newComment]
+    //         }));
+    //     } else {
+    //         console.error('Attempted to add an undefined or invalid Comment:', newComment);
+    //     }
+    // };
 
 
     useEffect(() => {
@@ -131,7 +131,7 @@ function SongObject({
                 </div>
                 )}
                 <div>
-                    <CommentList user={user} songId={id} onAddComment={handleNewComment} />
+                    <CommentList songUser={user} songId={id}  />
                 </div>
             </div>
         </div>

@@ -33,7 +33,8 @@ function CreateComment({onAddComment, songId}){
                 initialValues={{
                     comment_description: '',
                     user_id: currentUser.id,
-                    song_id: songId
+                    song_id: songId,
+             
                 }}
                 validationSchema={Yup.object({
                     comment_description: Yup.string()

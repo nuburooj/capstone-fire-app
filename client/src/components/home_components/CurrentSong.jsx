@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import AudioPlayer from '../Player_components/AudioPlayer';
 import NavBar from '../NavBar';
-import CommentList from '../comment_components/CommentList';
+import CommentList from '../comment_components/CommentList'
+import { useUser } from '../user_components/UserContext';;
 
 
 function CurrentSong({
@@ -11,18 +12,21 @@ function CurrentSong({
     song_artwork,
     upload_file,
     genre_id,
+    user
 }) {
     const navigate = useNavigate()
-
+    const {currentUser, setCurrentUser} = useUser()
     const [currentSong, setCurrentSong] = useState({
         song_title: '',
         song_description: '',
         song_artwork: '',
-        upload_file: ''
+        upload_file: '',
+        artist_id: '',
+        user: {}
     });
     console.log(currentSong)
     const { id } = useParams();
-
+console.log(id)
 
     function handleNewComment(newComment) {
         console.log(newComment); 
@@ -142,10 +146,14 @@ function CurrentSong({
                     <AudioPlayer currentSong={currentSong.upload_file} />
                     {currentSong.upload_file && <p className="song-link"><a href={currentSong.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                     <p className="song-description">description: {currentSong.song_description}</p>
+                    { currentUser.id == currentSong.artist_id &&(
+                <div>
                     {!editMode && <button onClick={handleEditSong}>Edit</button>}
                     <button onClick = {handleDeleteSong}>Delete</button>
+                    </div>
+                )}
                     <div>
-                    <CommentList  songId={id} onAddComment={handleNewComment} />
+                    <CommentList songUser={currentSong.user} songId={id}  />
                     </div>
                 </div>
             </div>
