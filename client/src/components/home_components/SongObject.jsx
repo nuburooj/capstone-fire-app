@@ -17,7 +17,6 @@ function SongObject({
     onDelete,
     user
 }){
-    console.log(user.id)
     const {currentUser, setCurrentUser} = useUser();
     const [currentSong, setCurrentSong] = useState({
         song_title: '',
