@@ -13,6 +13,8 @@ function CurrentGenre({
         genre_name: '',
         genre_description: '',
         songs: [],
+        fire_count: 0
+
     });
     console.log(genreSong)
     const { id } = useParams();
@@ -21,13 +23,76 @@ function CurrentGenre({
         fetch(`http://localhost:5555/genres/${id}`)
             .then(response => response.json())
             .then(data => {
+                console.log("SONGS DATA")
                 console.log(data.songs)
                 setGenreSong(prevState => ({
                     ...prevState, 
-                    ...data 
+                    ...data,
+                
                 }));
             });
     }, [id]);
+
+   
+    const Individualsong = ({song})=>{
+       let newfirecount = song.fire_count
+        const [individualFireCount, setIndividualFireCount] = useState(song.fire_count)
+        const [fetchFireCount, setFireCount] = useState(song.fire_count)
+    useEffect(()=>{
+        newfirecount = individualFireCount
+        },[individualFireCount])
+         const increment_fire_count = (songId,oldfire_count)=>{
+            newfirecount = newfirecount+1
+            alert(newfirecount)
+             fetch(`http://localhost:5555/songs/${songId}`, {
+                method: 'PATCH', 
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    fire_count:newfirecount
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("DATA")
+                console.log(data)
+               
+                     setIndividualFireCount(
+                (prev)=>{
+                    return prev+1
+                }
+            )     
+            
+            
+            })
+            .catch(error => {
+                console.error('Error updating song:', error);
+            });
+  
+
+    }
+
+
+        return(
+               <div className="song-item" key = {song.id}>
+                                <Link to={`/songs/${song.id}`}>
+                                    <h3 className="song-title">{song.song_title}</h3>
+                                </Link>
+                                    <p className="song-description">{song.song_description}</p>
+                                    <button onClick={(e)=>{
+                                        e.preventDefault();
+                                        increment_fire_count(song.id,song.fire_count);
+                                        setFireCount((prev)=>{
+                                            return prev+1
+                                        })
+                                    }}> 🔥{individualFireCount}</button>
+                                    {song.song_artwork && <img src={song.song_artwork} alt={song.song_title} className="song-artwork" />}
+                                    <AudioPlayerGenre genreSong={song.upload_file} />
+                                    {song.upload_file && <p className="song-link"><a href={song.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
+                            </div>
+        )
+    }
 
     return (
         <div>
@@ -41,15 +106,7 @@ function CurrentGenre({
             <div className="current-genre-container">
                     <div>
                         {genreSong.songs.map(song => (
-                            <div className="song-item" key={song.id}>
-                                <Link to={`/songs/${song.id}`}>
-                                    <h3 className="song-title">{song.song_title}</h3>
-                                </Link>
-                                    <p className="song-description">{song.song_description}</p>
-                                    {song.song_artwork && <img src={song.song_artwork} alt={song.song_title} className="song-artwork" />}
-                                    <AudioPlayerGenre genreSong={song.upload_file} />
-                                    {song.upload_file && <p className="song-link"><a href={song.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
-                            </div>
+                            <Individualsong song={song}/>
                         ))}
                     </div>
                 </div>

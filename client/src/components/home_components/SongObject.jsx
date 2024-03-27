@@ -12,17 +12,20 @@ function SongObject({
     song_artwork,
     upload_file,
     artist_id,
+    fire_count,
     genre_id,
     onSave,
     onDelete,
     user
 }){
     const {currentUser, setCurrentUser} = useUser();
+    
     const [currentSong, setCurrentSong] = useState({
         song_title: '',
         song_description: '',
         song_artwork: '',
-        upload_file: ''
+        upload_file: '',
+        fire_count:fire_count
     });
     console.log(currentSong)
    
@@ -110,6 +113,34 @@ function SongObject({
         )
     }
     
+            const increment_fire_count=() => {
+                console.log("FIRED")
+                console.log(currentSong.fire_count)
+                let new_fire_count = currentSong.fire_count+1
+ 
+            fetch(`http://localhost:5555/songs/${id}`, {
+                method: 'PATCH', 
+                headers: {
+                    'Content-Type': 'application/json',
+        },
+                body: JSON.stringify({
+                fire_count: new_fire_count
+        })
+    })
+                .then(response => response.json())
+                .then(data => {
+                setCurrentSong({
+                    ...currentSong,
+                    fire_count:new_fire_count
+         })
+                    console.log('Updated song data:', data);
+
+        })
+                .catch(error => {
+                console.error('Error updating song:', error);
+        });
+
+        }
 
     return(
       <div>
@@ -123,6 +154,7 @@ function SongObject({
                 {upload_file ? <AudioPlayerHome audioFile={upload_file} /> : "Loading..."}
                 {upload_file && <p className="song-link"><a href={upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                 <p className="song-description">description: {song_description}</p>
+                <button onClick={increment_fire_count}> 🔥{currentSong?.fire_count}</button>
                 { currentUser.id == artist_id &&(
                 <div>
                 <button onClick = {handleEdit}>Edit</button>

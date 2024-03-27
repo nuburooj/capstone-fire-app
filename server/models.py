@@ -94,7 +94,9 @@ class Song(db.Model, SerializerMixin):
     upload_file = db.Column(db.String)
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
-
+    fire_count = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    edited_at = db.Column(db.DateTime, onupdate = db.func.now())
 
     def __repr__(self):
         return f'Title: {self.song_title}, Description: {self.song_description}, Album Art: {self.song_artwork}'
@@ -176,6 +178,7 @@ class Comment(db.Model, SerializerMixin):
     edited_at = db.Column(db.DateTime, onupdate = db.func.now())
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     song_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+    fire_count = db.Column(db.Integer)
 
     #RELATIONSHIPS
     user = db.relationship('User', back_populates = 'comments')

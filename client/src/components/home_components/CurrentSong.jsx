@@ -12,6 +12,7 @@ function CurrentSong({
     song_artwork,
     upload_file,
     genre_id,
+    fire_count,
     user
 }) {
     const navigate = useNavigate()
@@ -22,7 +23,8 @@ function CurrentSong({
         song_artwork: '',
         upload_file: '',
         artist_id: '',
-        user: {}
+        user: {},
+        fire_count:fire_count
     });
     console.log(currentSong)
     const { id } = useParams();
@@ -135,6 +137,36 @@ console.log(id)
         )
     }
 
+    const increment_fire_count = () => {
+                console.log("FIRED")
+                console.log(currentSong.fire_count)
+        let new_fire_count = currentSong.fire_count+1
+ 
+        fetch(`http://localhost:5555/songs/${id}`, {
+            method: 'PATCH', 
+             headers: {
+                'Content-Type': 'application/json',
+    },
+            body: JSON.stringify({
+            fire_count: new_fire_count
+    })
+    })
+            .then(response => response.json())
+            .then(data => {
+                setCurrentSong({
+                    ...currentSong,
+                    fire_count:new_fire_count
+        })
+
+            console.log('Updated song data:', data);
+
+    })
+            .catch(error => {
+            console.error('Error updating song:', error);
+    });
+
+        }
+
 
     return (
          <div>
@@ -148,6 +180,7 @@ console.log(id)
                     <AudioPlayer currentSong={currentSong.upload_file} />
                     {currentSong.upload_file && <p className="song-link"><a href={currentSong.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
                     <p className="song-description">description: {currentSong.song_description}</p>
+                    <button onClick={increment_fire_count}> 🔥{currentSong?.fire_count}</button>
                     { currentUser.id == currentSong.artist_id &&(
                 <div>
                     {!editMode && <button onClick={handleEditSong}>Edit</button>}
