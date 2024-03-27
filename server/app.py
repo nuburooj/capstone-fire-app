@@ -198,7 +198,7 @@ def songs():
             genre_id = request.json['genre_id'],
             upload_file = request.json['upload_file'],
             artist_id = request.json['artist_id'],
-            fire_count = request.json['fire_count']
+            
         )
 
         db.session.add(new_song)
@@ -383,7 +383,7 @@ def comments():
             comment_description = request.json['comment_description'],
             user_id = request.json['user_id'],
             song_id = request.json['song_id'],
-            fire_count = request.json['fire_count']
+            
         )
         db.session.add(new_comment)
         db.session.commit()

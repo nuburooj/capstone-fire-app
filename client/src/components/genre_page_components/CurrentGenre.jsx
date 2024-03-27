@@ -13,9 +13,13 @@ function CurrentGenre({
         genre_name: '',
         genre_description: '',
         songs: [],
-        fire_count: 0
+        fire_count: 0,
+        
 
     });
+    
+    const [initialState,setInitialState] = useState([])
+
     console.log(genreSong)
     const { id } = useParams();
 
@@ -30,6 +34,7 @@ function CurrentGenre({
                     ...data,
                 
                 }));
+                setInitialState(data.songs)
             });
     }, [id]);
 
@@ -90,6 +95,7 @@ function CurrentGenre({
                                     {song.song_artwork && <img src={song.song_artwork} alt={song.song_title} className="song-artwork" />}
                                     <AudioPlayerGenre genreSong={song.upload_file} />
                                     {song.upload_file && <p className="song-link"><a href={song.upload_file} target="_blank" rel="noopener noreferrer">Download/View File</a></p>}
+                                    <p>Posted: {song.created_at}</p>
                             </div>
         )
     }
@@ -97,10 +103,54 @@ function CurrentGenre({
     return (
         <div>
             <NavBar />
-                <div className="current-genre-heading-container">
-        <div className="current-genre-heading">
+            <div className="current-genre-heading-container">
+            <div className="current-genre-heading">
             <h1 className="genre-name">{genreSong.genre_name}</h1>
             <h2 className="genre-description">{genreSong.genre_description}</h2>
+          <button onClick={() => {
+            setGenreSong((prev) => {
+       
+            let oldSongs = [...initialState];
+
+        let filteredSongs = oldSongs.sort((a, b) => {
+            const dateA = new Date(a.created_at);
+            const dateB = new Date(b.created_at);
+            return dateB - dateA; 
+        });
+
+       
+        let newData = {
+            ...prev,
+            songs: filteredSongs
+        };
+
+            return newData;
+            });
+        }}>Recent</button>
+
+          <button onClick={() => {
+                setGenreSong((prev) => {
+                let old = [...initialState];
+                let filteredSongs = old.sort((a, b) => {
+            if (a.fire_count > b.fire_count) {
+                return -1;
+            }
+            if (a.fire_count < b.fire_count) {
+                return 1;
+            }
+                return 0;
+        });
+                let newdata={
+                    ...prev,
+                    songs:filteredSongs
+                }
+                return newdata
+
+    });
+
+}}>
+            Hottest
+            </button>
         </div>
         </div>
             <div className="current-genre-container">

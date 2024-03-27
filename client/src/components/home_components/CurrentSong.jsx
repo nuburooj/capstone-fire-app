@@ -185,6 +185,7 @@ console.log(id)
                 <div>
                     {!editMode && <button onClick={handleEditSong}>Edit</button>}
                     <button onClick = {handleDeleteSong}>Delete</button>
+                    <p>Posted: {currentSong.created_at}</p>
                     </div>
                 )}
                     <div>

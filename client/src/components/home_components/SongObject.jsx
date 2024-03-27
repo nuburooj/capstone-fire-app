@@ -16,7 +16,9 @@ function SongObject({
     genre_id,
     onSave,
     onDelete,
-    user
+    user,
+    created_at
+
 }){
     const {currentUser, setCurrentUser} = useUser();
     
@@ -25,7 +27,8 @@ function SongObject({
         song_description: '',
         song_artwork: '',
         upload_file: '',
-        fire_count:fire_count
+        fire_count:fire_count,
+        created_at: created_at
     });
     console.log(currentSong)
    
@@ -141,12 +144,13 @@ function SongObject({
         });
 
         }
-
+                
     return(
       <div>
             <div className="song-item" >
                 {user.user_picture && <img src={user.user_picture} alt={user.username} className="user-picture" />}
                 <h2>{user.username}</h2>
+                <p>Posted: {created_at}</p>
                 {song_artwork && <img src={song_artwork} alt={song_title} className="song-artwork" />}
                 <Link to={`/songs/${id}`}>
                 <h3 className="song-title">title: {song_title}</h3>
