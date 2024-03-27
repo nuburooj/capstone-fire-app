@@ -55,6 +55,7 @@ function Comment({  songUser, comment, onDelete, onEdit }) {
                     {comment.user.user_picture && <img src={comment.user.user_picture} alt={comment.user.username} className="user-picture" />}
                      <h4>{comment.user.username}</h4>
                     <p>{comment.comment_description}</p>
+                    <p>{comment.created_at}</p>
                     { currentUser.id === comment.user?.id &&(
                     <div>
                         <button onClick={() => setIsEditing(true)}>Edit</button>

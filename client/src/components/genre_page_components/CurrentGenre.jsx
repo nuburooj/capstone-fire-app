@@ -48,7 +48,7 @@ function CurrentGenre({
         },[individualFireCount])
          const increment_fire_count = (songId,oldfire_count)=>{
             newfirecount = newfirecount+1
-            alert(newfirecount)
+            
              fetch(`http://localhost:5555/songs/${songId}`, {
                 method: 'PATCH', 
                 headers: {
