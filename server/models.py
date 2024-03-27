@@ -21,10 +21,11 @@ class User(db.Model, SerializerMixin):
         return f'User: {self.username}, Email: {self.email}, Picture: {self.user_picture}'
 
     #SERIALIZE RULES
-    serialize_rules = ('-_password_hash', '-songs.user' )
+    serialize_rules = ('-_password_hash', '-songs.user', '-comments.user' )
 
     #RELATIONSHIPS
     songs = db.relationship('Song', back_populates = 'user')
+    comments = db.relationship('Comment', back_populates = 'user')
 
     #USER validations
     @hybrid_property
@@ -71,7 +72,17 @@ class User(db.Model, SerializerMixin):
         if not isinstance(value, str) and len(value) == 0:
             raise ValueError('Password needs to be a non-empty string')
 
-
+    @validates('user_picture')
+    def validate_user_picture(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('User_picture must be a non-emty string')
+        return value
+    
+    @validates('Socials')
+    def validate_Socials(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('Spotify link must be a non-emty string')
+        return value
 
 class Song(db.Model, SerializerMixin):
     __tablename__ = 'songs'
@@ -83,17 +94,20 @@ class Song(db.Model, SerializerMixin):
     upload_file = db.Column(db.String)
     artist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     genre_id = db.Column(db.Integer, db.ForeignKey('genres.id'))
-
+    fire_count = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    edited_at = db.Column(db.DateTime, onupdate = db.func.now())
 
     def __repr__(self):
         return f'Title: {self.song_title}, Description: {self.song_description}, Album Art: {self.song_artwork}'
     
     #RELATIONSHIPS
     user = db.relationship('User', back_populates = 'songs')
-    genres = db.relationship('Genre', back_populates = 'songs')
+    genre = db.relationship('Genre', back_populates = 'songs')
+    comments = db.relationship('Comment', back_populates = 'song')
 
     #SERIALIZATION RULES
-    serialize_rules = ('-user.songs', '-genres.songs' )
+    serialize_rules = ('-user.songs', '-genre.songs', '-comments.song', '-user.comments', '-comments.user' )
 
     
     #VALIDATIONS
@@ -135,10 +149,10 @@ class Genre(db.Model,SerializerMixin):
         return f'Title: {self.genre_name}, Description: {self.genre_description}'
     
     #RELATIONSHIPS
-    songs = db.relationship('Song', back_populates = 'genres')
+    songs = db.relationship('Song', back_populates = 'genre')
 
     #SERIALIZE RULES
-    serialize_rules = ('-songs.genres', )
+    serialize_rules = ('-songs.genre', )
 
     #VALIDATIONS
 
@@ -152,4 +166,30 @@ class Genre(db.Model,SerializerMixin):
     def validate_genre_description(self, key, value):
         if not isinstance(value, str) and len(value) == 0:
             raise ValueError('genre_description must be a non-emty string')
+        return value
+    
+
+class Comment(db.Model, SerializerMixin):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key = True)
+    comment_description = db.Column(db.String)
+    created_at = db.Column(db.DateTime, server_default = db.func.now())
+    edited_at = db.Column(db.DateTime, onupdate = db.func.now())
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    song_id = db.Column(db.Integer, db.ForeignKey('songs.id'))
+    fire_count = db.Column(db.Integer)
+
+    #RELATIONSHIPS
+    user = db.relationship('User', back_populates = 'comments')
+    song = db.relationship('Song', back_populates = 'comments')
+
+    #SERIALIZE RULES
+    serialize_rules = ('-user.comments', '-song.comments')
+
+    #COMMENTS VALIDATIONS
+    @validates('comment_description')
+    def validate_comment_description(self, key, value):
+        if not isinstance(value, str) and len(value) == 0:
+            raise ValueError('comment_description must be a non-emty string')
         return value

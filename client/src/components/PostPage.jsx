@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
-
 import { Formik, Form, useField } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
+import ImageUploadWidget from "./upload_widget_components/ImageUploadWidget";
+import TrackUploadWidget from "./upload_widget_components/TrackUploadWidget";
+import { useUser } from "./user_components/UserContext";
 
 function PostPage() {
 
  const navigate = useNavigate()
+ const {currentUser, setCurrentUser} = useUser()
+ const [imageLink, setImageLink] = useState("")
+ const [trackLink, setTrackLink] = useState("")
 
     const SongPostTextInput = ({lable, ...props}) => {
         
@@ -30,11 +35,14 @@ function PostPage() {
             <h1>Song Form</h1>
             <div> 
                 <Formik
+                enableReinitialize
                     initialValues={{
+                        artist_id: currentUser.id,
                         song_title: "",
                         song_description: "",
-                        song_artwork: "",
-                        upload_file: "",
+                        song_artwork: imageLink,
+                        upload_file: trackLink,
+                        genre_id: ""
                         
                     }}
                     validationSchema={Yup.object({
@@ -43,18 +51,22 @@ function PostPage() {
                         song_description: Yup.string()
                         .required('Song Description is required.'),
                         song_artwork: Yup.string()
-                        .required('Artwork is required'),
+                        .required('Please select Artwork to upload.'),
                         upload_file: Yup.string()
-                        .required('Password is required')
+                        .required('Please select a Track to upload.'),
+                        genre_id: Yup.string()
+                        .required('Genre id is required.')
+                        
                     })}
                     onSubmit={(values, { setSubmitting, resetForm }) => {
+                        const submmissionValues = {...values, user_picture: imageLink, upload_file: trackLink, artist_id: currentUser.id};
                         
                         fetch(`http://localhost:5555/songs`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
-                            body: JSON.stringify(values)    
+                            body: JSON.stringify(submmissionValues)    
                         })
                         .then(res => res.json())
                         .then(values => {
@@ -67,8 +79,11 @@ function PostPage() {
                         <Form className='Song-Form'>
                             <SongPostTextInput type="text" name="song_title" lable="Track Title" />
                             <SongPostTextInput type="text" name="song_description" lable="Description" />
-                            <SongPostTextInput type="text" name="song_artwork" lable="Artwork" />
-                            <SongPostTextInput type="text" name="upload_file" lable="Audio File" />
+                            <SongPostTextInput type="text" name="genre_id" lable="Genre ID" />
+                            <ImageUploadWidget onSetImage={setImageLink}/>
+                            {imageLink && <img src={imageLink} alt="Uploaded picture" />}
+                            <TrackUploadWidget onSetTrack={setTrackLink}/>
+                            {trackLink && <audio src={trackLink} alt="Uploaded track" />}
                             <button type="submit">Is it Fire?</button>
                         </Form>
                 </Formik>

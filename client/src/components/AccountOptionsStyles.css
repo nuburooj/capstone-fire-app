@@ -4,6 +4,8 @@
     border: none;
     cursor: pointer;
     padding: 5px;
+    /* position: relative;
+    left: 10px; */
 }
 
 .user-Picture {
@@ -18,7 +20,7 @@
 /* Dropdown Menu Styles */
 .dropdown-menu {
     position: absolute;
-    top: 9.5%;
+    top: 14.9%;
     /* Position it right below the avatar button */
     right: 0;
     background-color: white;
