@@ -149,7 +149,9 @@ function SongObject({
       <div>
             <div className="song-item" >
                 {user.user_picture && <img src={user.user_picture} alt={user.username} className="user-picture" />}
+                <Link to={`/users/${user.id}`}>
                 <h2>{user.username}</h2>
+                </Link>
                 <p>Posted: {created_at}</p>
                 {song_artwork && <img src={song_artwork} alt={song_title} className="song-artwork" />}
                 <Link to={`/songs/${id}`}>
